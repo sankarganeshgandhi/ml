@@ -4,8 +4,8 @@
 
 .images/
 
-dataset/User.*.*.jpg
-dataset/User.*.*.png
+dataset/User*.jpg
+dataset/User*.png
 
 trainer/trainer.yml
 
@@ -13,8 +13,5 @@ sounds/*.wav
 sounds/hello.wav
 
 *.iml
-*.jpg
-*.png
-*.gif
 
 
