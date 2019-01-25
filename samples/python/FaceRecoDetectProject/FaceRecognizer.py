@@ -1,5 +1,56 @@
 import cv2
+import pyaudio
+import wave
+import threading
+import os
 import constants
+
+
+def soundUserName(userName):
+    CHUNK = 1024
+
+    wf = wave.open(os.path.join(constants.FILEPATH_TO_SOUNDS_DIR, 'hello.wav'), 'rb')
+    # open stream (2)
+    stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
+                    channels=wf.getnchannels(),
+                    rate=wf.getframerate(),
+                    output=True)
+
+    # read data
+    data = wf.readframes(CHUNK)
+
+    # play stream (3)
+    while len(data) > 0:
+        stream.write(data)
+        data = wf.readframes(CHUNK)
+
+    # stop stream (4)
+    stream.stop_stream()
+    stream.close()
+    wf.close()
+
+    waveFile = os.path.join(constants.FILEPATH_TO_SOUNDS_DIR, userName + '.wav')
+
+    wf = wave.open(waveFile, 'rb')
+    # open stream (2)
+    stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
+                    channels=wf.getnchannels(),
+                    rate=wf.getframerate(),
+                    output=True)
+
+    # read data
+    data = wf.readframes(CHUNK)
+
+    # play stream (3)
+    while len(data) > 0:
+        stream.write(data)
+        data = wf.readframes(CHUNK)
+
+    # stop stream (4)
+    stream.stop_stream()
+    stream.close()
+    wf.close()
+
 
 recognizer = cv2.face.LBPHFaceRecognizer_create()
 recognizer.read(constants.FILEPATH_TO_TRAINER_YAML)
@@ -9,8 +60,8 @@ font = cv2.FONT_HERSHEY_SIMPLEX
 # iniciate id counter
 index = 0
 
-# names related to ids: example ==> Marcelo: id=1,  etc
-userNames = ['None', 'Sankar', 'Sudha', 'Puppy']
+# names related to ids: example ==> 'UserName1': id=1,  etc
+userNames = ['None', '1', '2', '3']
 
 # Initialize and start realtime video capture
 videoCam = cv2.VideoCapture(0)
@@ -21,7 +72,14 @@ videoCam.set(4, 480)  # set video height
 minW = 0.1 * videoCam.get(3)
 minH = 0.1 * videoCam.get(4)
 
-while True:
+# instantiate PyAudio (1)
+p = pyaudio.PyAudio()
+
+userName = 'None'
+quitVideo = False
+lastUserName = 'None'
+threads = []
+while quitVideo is False:
     ret, img = videoCam.read()
     img = cv2.flip(img, 1)  #
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -41,9 +99,22 @@ while True:
         if confidence < 100:
             userName = userNames[index]
             confidence = "  {0}%".format(round(100 - confidence))
+            break
         else:
-            userName = "unknown"
+            userName = 'None'
             confidence = "  {0}%".format(round(100 - confidence))
+
+    if userName is not 'None' and lastUserName is not userName:
+        lastUserName = userName
+        someThreadAlive = False
+        for thread in threads:
+            if thread.is_alive():
+                someThreadAlive = True
+                break
+        if someThreadAlive is False:
+            t = threading.Thread(target=soundUserName, args=(userName,))
+            threads.append(t)
+            t.start()
 
         cv2.putText(
             img,
@@ -64,12 +135,15 @@ while True:
             1
         )
 
-    cv2.imshow('camera', img)
-    k = cv2.waitKey(10) & 0xff  # Press 'ESC' for exiting video
+    cv2.imshow('Video', img)
+    k = cv2.waitKey(30) & 0xff  # Press 'ESC' for exiting video
     if k == 27:
-        break
+        quitVideo = True
 
 # Do a bit of cleanup
 print("\n [INFO] Exiting Program and cleanup stuff")
 videoCam.release()
 cv2.destroyAllWindows()
+
+# close PyAudio (5)
+p.terminate()
