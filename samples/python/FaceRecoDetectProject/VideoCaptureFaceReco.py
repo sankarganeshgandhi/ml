@@ -1,5 +1,7 @@
 import cv2
 
+print('Press ESC to quit')
+
 videoCap = cv2.VideoCapture(0)
 
 # setting the width and height of the camera image capture
