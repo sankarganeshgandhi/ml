@@ -4,8 +4,9 @@
 
 .images/
 
-dataset/
-trainer/
+dataset/*.jpg
+dataset/*.png
+trainer/trainer.yml
 
 *.iml
 *.jpg
