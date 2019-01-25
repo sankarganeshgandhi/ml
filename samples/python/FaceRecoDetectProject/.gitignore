@@ -4,8 +4,8 @@
 
 .images/
 
-dataset/User*.*jpg
-dataset/User*.*png
+dataset/User.*.*.jpg
+dataset/User.*.*.png
 
 trainer/trainer.yml
 
