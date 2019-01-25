@@ -1,2 +1,2 @@
 # ml
-Machine learning examples and implementation is various technologies
+Machine learning examples and implementation in various technologies
