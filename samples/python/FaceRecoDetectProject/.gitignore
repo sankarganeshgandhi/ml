@@ -10,6 +10,7 @@ dataset/User*.*png
 trainer/trainer.yml
 
 sounds/*.wav
+sounds/hello.wav
 
 *.iml
 *.jpg
