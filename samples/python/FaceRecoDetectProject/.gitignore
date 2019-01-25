@@ -1,0 +1,12 @@
+# Covers JetBrains IDEs: IntelliJ
+
+.idea/
+
+.images/
+
+*.iml
+*.jpg
+*.png
+*.gif
+
+
