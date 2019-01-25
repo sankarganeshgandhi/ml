@@ -1,10 +1,11 @@
 import cv2
 import sys
+import constants
 
 print('Press ESC to quit')
 
 inputImgPath = sys.argv[1]
-cascadeXMLPath = "./haarcascade_frontalface_default.xml"
+cascadeXMLPath = constants.FILEPATH_TO_HAAR_CASCADE_XML
 
 faceFrontCascade = cv2.CascadeClassifier(cascadeXMLPath)
 
