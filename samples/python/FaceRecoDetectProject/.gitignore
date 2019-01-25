@@ -4,9 +4,12 @@
 
 .images/
 
-dataset/*.jpg
-dataset/*.png
+dataset/User*.*jpg
+dataset/User*.*png
+
 trainer/trainer.yml
+
+sounds/*.wav
 
 *.iml
 *.jpg
