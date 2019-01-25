@@ -4,6 +4,9 @@
 
 .images/
 
+dataset/
+trainer/
+
 *.iml
 *.jpg
 *.png

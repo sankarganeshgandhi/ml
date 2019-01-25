@@ -1,4 +1,5 @@
 import cv2
+import constants
 
 print('Press ESC to quit')
 
@@ -8,7 +9,7 @@ videoCap = cv2.VideoCapture(0)
 videoCap.set(3, 640)
 videoCap.set(4, 480)
 
-faceCascade = cv2.CascadeClassifier('./haarcascade_frontalface_default.xml')
+faceCascade = cv2.CascadeClassifier(constants.FILEPATH_TO_HAAR_CASCADE_XML)
 
 while True:
     ret, frame = videoCap.read()
